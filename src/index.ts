@@ -5,7 +5,7 @@ import express from "express";
 import { logger } from "./middleware/logger.ts";
 import { auth } from "./middleware/auth.ts";
 import authRoutes from "./routes/auth.ts";
-import chatRoutes from "./routes/chat.ts";
+import promptRoutes from "./routes/prompt.ts";
 
 const app = express();
 const port = process.env.APP_PORT || 3000
@@ -17,8 +17,8 @@ app.use(logger);
 app.use("/auth", authRoutes);
 
 // using auth
-app.use(auth);
-app.use("/chat", chatRoutes);
+app.use(auth)
+app.use("/prompt", promptRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);

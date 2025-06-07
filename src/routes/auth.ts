@@ -1,11 +1,9 @@
 import express from "express";
+import { signInHandler, signUpHandler } from "../controllers/auth.ts";
 
 const router = express.Router();
 
-router.post("/login", (req, res) => {
-  res.json({
-    message: "from login",
-  });
-});
+router.post("/sign_up", signUpHandler);
+router.post("/sign_in", signInHandler);
 
 export default router;
