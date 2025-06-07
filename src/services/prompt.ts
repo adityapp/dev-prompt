@@ -14,14 +14,19 @@ export const createPrompt = async (prompt: {
 
 export const testPrompt = async (
   id: number,
-  variables: { blog_content: string }
+  variables: { [key: string]: string }
 ) => {
   const prompt = await prisma.prompt.findUnique({ where: { id: id } });
   if (!prompt) throw new Error("Prompt not found");
 
-  prompt.template = prompt.template.replace(
-    "{{blog_content}}",
-    variables.blog_content
-  );
+  const matches = [...prompt.template.matchAll(/{{(.*?)}}/g)];
+  const field = matches.map(m => m[1])
+  field.forEach((variable) => {
+    prompt.template = prompt.template.replace(
+      `{{${variable}}}`,
+      variables[String(variable)]
+    );
+  });
+
   return await runGemini(prompt.template);
 };
